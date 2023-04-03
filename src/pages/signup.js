@@ -1,15 +1,14 @@
-import axios from 'axios';
+import { apis } from '@/shared/axios';
 import React from 'react';
 import { useMutation } from 'react-query';
-import Cookies from 'universal-cookie';
 
 const SignUp = () => {
   const [user, setUser] = React.useState({
     id: '',
     password: '',
   });
-  const changHandler = ({ target }) => {
-    const { name, value } = target;
+  const changHandler = (event) => {
+    const { name, value } = event.target;
     setUser((pre) => ({ ...pre, [name]: value }));
   };
 
@@ -17,10 +16,8 @@ const SignUp = () => {
   //3번째 옵션 config
   const { mutate: register, status } = useMutation({
     mutationFn: async (user) => {
-      const data = await axios.post('http://3.38.191.164/login', user, {
-        headers: data,
-      });
-      console.log('data', data.token);
+      const data = await apis.post('/register', user);
+      console.log('data', data);
       return data;
     },
   });
